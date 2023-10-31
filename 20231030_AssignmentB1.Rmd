@@ -13,50 +13,30 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(testthat)
-library(palmerpenguins)
 ```
-# plot_scatter function
+
+# Creating a Function
 ```{r}
-#' Title: Scatterplot Function
-#' @description
-#' scat_plot function
-#' @details The following code creates a function that generates a scatterplot from a categorical variable 'catvar' and a numeric variable 'numvar'. It throws an error if catvar is not of class 'character' or numvar is not of class 'numeric'.
-#'
-#' @param catvar a character vector; short for categorical variable, as this code is designed primarily for creating plots of from categorical and numeric data efficiently
-#' @param numvar a numeric vector; short for for numeric variable, as this code will identify the relationship between a numeric and categorical variable from a dataset using a plot.
-#' @param na.rm specify whether any missing values should be removed (TRUE; default) or not (FALSE) from catvar and numvar arguments
-#'
-#' @return The function returns a scatterplot, with catvar on the x-axis and numvar on the y-axis, with points additionally coloured by catvar.
-plot_scatter <- function(catvar, numvar, na.rm = TRUE) {
-  if(!is.character(catvar) | !is.numeric(numvar)) {
-    stop("`catvar` must be a character and `numvar` must be numeric")
+#Create a function that calculates the standard deviation of a vector or list of numerics representing a sample
+sd <- function(w, na.rm = TRUE) {
+  mu = mean(w)
+  n = length(w)
+  sum_sq = 0
+  for (i in 1:length(w)) {
+    sum_sq = sum_sq + (w[i] - mu)^2
   }
-  scat_plot <- ggplot() +
-    geom_point(mapping = aes(x = catvar, y = numvar, color = catvar), alpha = 0.2) + 
-    theme_classic()
-  return(scat_plot)
+  sd_sq = sum_sq/(n - 1)
+  stdev = sqrt(sd_sq)
+  return(stdev)
 }
 ```
 
-# Examples
-Next, we will demonstrate the usage of plot_scatter using the penguins dataset
 ```{r}
-#Example 1: plot bill length as a function of penguin species
-head(penguins)
-penguins %>%
-  plot_scatter(catvar = penguins$species, numvar = penguins$bill_length_mm)
-```
+#Example 1: calculate the standard deviation of a vector
+vec <- c(2,3,4,5,10,12)
+sd(vec, na.rm = TRUE)
 
-```{r}
-#Example 2: plot flipper length vs sex, specifying na.rm = FALSE
-penguins %>%
-  plot_scatter(catvar = penguins$sex, numvar = penguins$flipper_length_mm, na.rm = FALSE)
+#Example 2: calculate the standard deviation of a vector with missing values
+vec1 <- c(2,3,4,5,NA,NA,10,12)
+sd(vec1, na.rm = TRUE)
 ```
-
-```{r, error = TRUE}
-#Example 3: display an error message when the input to numvar is not numeric
-penguins %>%
-  plot_scatter(catvar = penguins$flipper_length_mm, numvar = penguins$bill_length_mm)
-```
-# 
-
