@@ -17,14 +17,18 @@ library(palmerpenguins)
 ```
 # plot_scatter function
 ```{r}
+#' Title: Scatterplot Function
 #' @description
 #' scat_plot function
 #' @details The following code creates a function that generates a scatterplot from a categorical variable 'catvar' and a numeric variable 'numvar'. It throws an error if catvar is not of class 'character' or numvar is not of class 'numeric'.
-#' @param catvar character vector: named catvar as a short form of categorical variable, as this code is designed primarily for creating plots of from categorical and numeric data efficiently.
-#' @param numvar numeric vector: named numvar as a short form for numeric variable, as this code will identify the relationship between a numeric and categorical variable from a dataset using a plot.
+#'
+#' @param catvar a character vector; short for categorical variable, as this code is designed primarily for creating plots of from categorical and numeric data efficiently
+#' @param numvar a numeric vector; short for for numeric variable, as this code will identify the relationship between a numeric and categorical variable from a dataset using a plot.
+#' @param na.rm specify whether any missing values should be removed (TRUE; default) or not (FALSE) from catvar and numvar arguments
+#'
 #' @return The function returns a scatterplot, with catvar on the x-axis and numvar on the y-axis, with points additionally coloured by catvar.
-plot_scatter <- function(dat, catvar, numvar, na.rm = TRUE) {
-  scat_plot <- ggplot(data = dat)
+plot_scatter <- function(catvar, numvar, na.rm = TRUE) {
+  scat_plot <- ggplot() +
     geom_point(mapping = aes(x = catvar, y = numvar, color = catvar), alpha = 0.2) + 
     theme_classic()
   return(scat_plot)
@@ -34,7 +38,8 @@ plot_scatter <- function(dat, catvar, numvar, na.rm = TRUE) {
 Next, we will demonstrate the usage of plot_scatter using the penguins dataset
 ```{r}
 head(penguins)
-plot_scatter(data = penguins, catvar = penguins$species, numvar = penguins$bill_length_mm)
+penguins %>%
+  plot_scatter(catvar = penguins$species, numvar = penguins$bill_length_mm)
 
 ```
 
