@@ -28,6 +28,9 @@ library(palmerpenguins)
 #'
 #' @return The function returns a scatterplot, with catvar on the x-axis and numvar on the y-axis, with points additionally coloured by catvar.
 plot_scatter <- function(catvar, numvar, na.rm = TRUE) {
+  if(!is.character(catvar) | !is.numeric(numvar)) {
+    stop("`catvar` must be a character and `numvar` must be numeric")
+  }
   scat_plot <- ggplot() +
     geom_point(mapping = aes(x = catvar, y = numvar, color = catvar), alpha = 0.2) + 
     theme_classic()
@@ -35,11 +38,25 @@ plot_scatter <- function(catvar, numvar, na.rm = TRUE) {
 }
 ```
 
+# Examples
 Next, we will demonstrate the usage of plot_scatter using the penguins dataset
 ```{r}
+#Example 1: plot bill length as a function of penguin species
 head(penguins)
 penguins %>%
   plot_scatter(catvar = penguins$species, numvar = penguins$bill_length_mm)
-
 ```
+
+```{r}
+#Example 2: plot flipper length vs sex, specifying na.rm = FALSE
+penguins %>%
+  plot_scatter(catvar = penguins$sex, numvar = penguins$flipper_length_mm, na.rm = FALSE)
+```
+
+```{r, error = TRUE}
+#Example 3: display an error message when the input to numvar is not numeric
+penguins %>%
+  plot_scatter(catvar = penguins$flipper_length_mm, numvar = penguins$bill_length_mm)
+```
+# 
 
