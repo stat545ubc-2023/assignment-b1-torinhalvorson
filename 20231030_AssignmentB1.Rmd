@@ -18,7 +18,8 @@ library(testthat)
 # Creating a Function
 ```{r}
 #Create a function that calculates the standard deviation of a vector or list of numerics representing a sample
-sd <- function(w, na.rm = TRUE) {
+stdev <- function(w, na.rm = TRUE) {
+  stopifnot(is.numeric(w))
   mu = mean(w)
   n = length(w)
   sum_sq = 0
@@ -26,17 +27,35 @@ sd <- function(w, na.rm = TRUE) {
     sum_sq = sum_sq + (w[i] - mu)^2
   }
   sd_sq = sum_sq/(n - 1)
-  stdev = sqrt(sd_sq)
-  return(stdev)
+  stdeviation = sqrt(sd_sq)
+  return(stdeviation)
 }
 ```
 
+# Examples
 ```{r}
 #Example 1: calculate the standard deviation of a vector
 vec <- c(2,3,4,5,10,12)
-sd(vec, na.rm = TRUE)
+stdev(w = vec)
 
 #Example 2: calculate the standard deviation of a vector with missing values
 vec1 <- c(2,3,4,5,NA,NA,10,12)
-sd(vec1, na.rm = TRUE)
+stdev(w = vec1, na.rm = TRUE)
+
+#Example 3: Calculate the standard deviation of a numeric column in the penguins dataset
+library(palmerpenguins)
+penguins %>%
+  stdev(w = penguins$flipper_length_mm, na.rm = TRUE)
+```
+# Testing
+```{r}
+# Test that the function output is the same as the built-in dplyr function sd()
+test_that("vec", {expect_equal(sd(vec), stdev(vec))})
+
+#Test that the function returns an error if w is not numeric
+vec2 <- c("apple", "banana", "orange")
+test_that("vec", {expect_error(stdev(vec2))})
+
+
+
 ```
