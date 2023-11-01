@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(testthat)
+library(gapminder)
 ```
 
 # Creating a Function
@@ -24,18 +25,22 @@ library(testthat)
 #' @param w a numeric vector, named as per conventions for vectors
 #' @param na.rm a logical operator that determines whether missing values are kept (if FALSE) or removed (if TRUE)
 #'
-#' @return the function returns the standard deviation of the vector of numerics
+#' @return The function returns the standard deviation of the vector of numerics. The mean and length of the vector are also printed as the function runs, to double-check that the values used for calculating the standard deviation are correct.
 
-stdev <- function(w, na.rm = TRUE) {
+stdev <- function(w) {
   stopifnot(is.numeric(w))
+  w = w[!is.na(w)]
   mu = mean(w)
+  print(paste("Mean:", mu))
   n = length(w)
+  print(paste("Length:", n))
   sum_sq = 0
   for (i in 1:length(w)) {
     sum_sq = sum_sq + (w[i] - mu)^2
   }
   sd_sq = sum_sq/(n - 1)
   stdeviation = sqrt(sd_sq)
+  print("Standard deviation:")
   return(stdeviation)
 }
 ```
@@ -48,11 +53,10 @@ stdev(w = vec)
 
 #Example 2: calculate the standard deviation of a vector with missing values
 vec1 <- c(2,3,4,5,NA,NA,10,12)
-stdev(w = vec1, na.rm = TRUE)
+stdev(w = vec1)
 
 #Example 3: Calculate the standard deviation of a numeric column in the gapminder dataset
-gapminder %>%
-  stdev(w = gapminder$lifeExp)
+stdev(gapminder$lifeExp)
 ```
 # Testing
 ```{r}
