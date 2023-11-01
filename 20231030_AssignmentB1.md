@@ -56,15 +56,107 @@ library(testthat)
     ##     matches
 
 ``` r
-#' @description
-#' scat_plot function
-#' @details # scat_plot function
-#' @details The following code creates a function that generates a scatterplot from a categorical variable 'catvar' and a numeric variable 'numvar'
-#' 
-plot_scatter <- function(catvar, numvar, na.rm = TRUE) {
-  scat_plot <- ggplot(aes(x = catvar, y = numvar, color = catvar)) + 
-    geom_point(alpha = 0.2) + 
-    theme_classic()
-  return(scat_plot)
+library(gapminder)
+```
+
+    ## Warning: package 'gapminder' was built under R version 4.2.3
+
+# Creating a Function
+
+``` r
+#Create a function that calculates the standard deviation of a vector or list of numerics representing a sample
+#' Title: stdev
+#'
+#' @description This function calculates the standard deviation of a vector of numbers.
+#' @param w a numeric vector, named as per conventions for vectors
+#' @param na.rm a logical operator that determines whether missing values are kept (if FALSE) or removed (if TRUE)
+#'
+#' @return The function returns the standard deviation of the vector of numerics. The mean and length of the vector are also printed as the function runs, to double-check that the values used for calculating the standard deviation are correct.
+
+stdev <- function(w) {
+  stopifnot(is.numeric(w))
+  w = w[!is.na(w)]
+  mu = mean(w)
+  print(paste("Mean:", mu))
+  n = length(w)
+  print(paste("Length:", n))
+  sum_sq = 0
+  for (i in 1:length(w)) {
+    sum_sq = sum_sq + (w[i] - mu)^2
+  }
+  sd_sq = sum_sq/(n - 1)
+  stdeviation = sqrt(sd_sq)
+  print("Standard deviation:")
+  return(stdeviation)
 }
 ```
+
+# Examples
+
+``` r
+#Example 1: calculate the standard deviation of a vector
+vec <- c(2,3,4,5,10,12)
+stdev(w = vec)
+```
+
+    ## [1] "Mean: 6"
+    ## [1] "Length: 6"
+    ## [1] "Standard deviation:"
+
+    ## [1] 4.049691
+
+``` r
+#Example 2: calculate the standard deviation of a vector with missing values
+vec1 <- c(2,3,4,5,NA,NA,10,12)
+stdev(w = vec1)
+```
+
+    ## [1] "Mean: 6"
+    ## [1] "Length: 6"
+    ## [1] "Standard deviation:"
+
+    ## [1] 4.049691
+
+``` r
+#Example 3: Calculate the standard deviation of a numeric column in the gapminder dataset
+stdev(gapminder$lifeExp)
+```
+
+    ## [1] "Mean: 59.4744393661972"
+    ## [1] "Length: 1704"
+    ## [1] "Standard deviation:"
+
+    ## [1] 12.91711
+
+# Testing
+
+``` r
+# Test that the function output is the same as the built-in dplyr function sd()
+test_that("vec", {expect_equal(sd(vec), stdev(vec))})
+```
+
+    ## [1] "Mean: 6"
+    ## [1] "Length: 6"
+    ## [1] "Standard deviation:"
+    ## Test passed 🥳
+
+``` r
+#Test that the function returns an error if w is not numeric
+vec2 <- c("apple", "banana", "orange")
+test_that("vec", {expect_error(stdev(vec2))})
+```
+
+    ## Test passed 🌈
+
+``` r
+#Test that the function returns the same output regardless of missing values in the vector
+test_that("vec", {expect_equal(stdev(vec), stdev(vec1))})
+```
+
+    ## [1] "Mean: 6"
+    ## [1] "Length: 6"
+    ## [1] "Standard deviation:"
+    ## [1] "Mean: 6"
+    ## [1] "Length: 6"
+    ## [1] "Standard deviation:"
+    ## Test passed 😸
