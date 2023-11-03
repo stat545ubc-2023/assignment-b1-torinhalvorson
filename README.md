@@ -13,4 +13,4 @@ The repository contains the following documents:
   - the source code for 20231030_AssignmentB1.md, in .Rmd format
 
 3. assignment-b1-torinhalvorson.Rproj
-   - the R project file for this assignment
+   - the R project specifications for this assignment
