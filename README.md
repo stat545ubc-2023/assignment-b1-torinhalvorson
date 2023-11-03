@@ -10,4 +10,7 @@ The repository contains the following documents:
   - contains guidance in the form of comments and text to help the reader to better understand the contents of the document
   
 2. 20231030_AssignmentB1.Rmd
-  - The source code for 20231030_AssignmentB1.md, in .Rmd format
+  - the source code for 20231030_AssignmentB1.md, in .Rmd format
+
+3. assignment-b1-torinhalvorson.Rproj
+   - the R project file for this assignment
