@@ -3,6 +3,8 @@
 Torin
 2023-10-31
 
+*We will begin by loading the packages required for this code*
+
 ``` r
 library(tidyverse)
 ```
@@ -63,15 +65,17 @@ library(gapminder)
 
 # Creating a Function
 
+*The following code will create a function that calculates the standard
+deviation of a vector of numerics representing a sample*
+
 ``` r
-#Create a function that calculates the standard deviation of a vector or list of numerics representing a sample
-#' Title: stdev
+#' Title: stdev()
 #'
-#' @description This function calculates the standard deviation of a vector of numbers.
-#' @param w a numeric vector, named as per conventions for vectors
-#' @param na.rm a logical operator that determines whether missing values are kept (if FALSE) or removed (if TRUE)
-#'
-#' @return The function returns the standard deviation of the vector of numerics. The mean and length of the vector are also printed as the function runs, to double-check that the values used for calculating the standard deviation are correct.
+#' @description This function calculates the standard deviation of a vector of numbers, automatically removing any missing values. The input must be numeric, or the function will throw an error.
+#' 
+#' @param w a numeric vector, named 'w' in keeping with conventions for vectors
+#' 
+#' @return The function returns the standard deviation of the vector. The mean and length of the vector are also printed as the function runs, to double-check that the values used for calculating the standard deviation are correct.
 
 stdev <- function(w) {
   stopifnot(is.numeric(w))
@@ -92,6 +96,9 @@ stdev <- function(w) {
 ```
 
 # Examples
+
+*The following code will demonstrate the use of the newly created
+function `stdev()` using three examples*
 
 ``` r
 #Example 1: calculate the standard deviation of a vector
@@ -130,6 +137,9 @@ stdev(gapminder$lifeExp)
 
 # Testing
 
+*The following code will formally test that the function returns the
+expected output in three distinct scenarios*
+
 ``` r
 # Test that the function output is the same as the built-in dplyr function sd()
 test_that("vec", {expect_equal(sd(vec), stdev(vec))})
@@ -138,7 +148,7 @@ test_that("vec", {expect_equal(sd(vec), stdev(vec))})
     ## [1] "Mean: 6"
     ## [1] "Length: 6"
     ## [1] "Standard deviation:"
-    ## Test passed 🥳
+    ## Test passed 🎉
 
 ``` r
 #Test that the function returns an error if w is not numeric
@@ -146,7 +156,7 @@ vec2 <- c("apple", "banana", "orange")
 test_that("vec", {expect_error(stdev(vec2))})
 ```
 
-    ## Test passed 🌈
+    ## Test passed 🥇
 
 ``` r
 #Test that the function returns the same output regardless of missing values in the vector
@@ -159,4 +169,4 @@ test_that("vec", {expect_equal(stdev(vec), stdev(vec1))})
     ## [1] "Mean: 6"
     ## [1] "Length: 6"
     ## [1] "Standard deviation:"
-    ## Test passed 😸
+    ## Test passed 🥇

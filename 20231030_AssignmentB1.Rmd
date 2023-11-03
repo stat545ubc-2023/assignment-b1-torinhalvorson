@@ -9,7 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
+_We will begin by loading the packages required for this code_
 ```{r}
 library(tidyverse)
 library(testthat)
@@ -17,15 +17,16 @@ library(gapminder)
 ```
 
 # Creating a Function
+
+_The following code will create a function that calculates the standard deviation of a vector of numerics representing a sample_
 ```{r}
-#Create a function that calculates the standard deviation of a vector or list of numerics representing a sample
-#' Title: stdev
+#' Title: stdev()
 #'
-#' @description This function calculates the standard deviation of a vector of numbers.
-#' @param w a numeric vector, named as per conventions for vectors
-#' @param na.rm a logical operator that determines whether missing values are kept (if FALSE) or removed (if TRUE)
-#'
-#' @return The function returns the standard deviation of the vector of numerics. The mean and length of the vector are also printed as the function runs, to double-check that the values used for calculating the standard deviation are correct.
+#' @description This function calculates the standard deviation of a vector of numbers, automatically removing any missing values. The input must be numeric, or the function will throw an error.
+#' 
+#' @param w a numeric vector, named 'w' in keeping with conventions for vectors
+#' 
+#' @return The function returns the standard deviation of the vector. The mean and length of the vector are also printed as the function runs, to double-check that the values used for calculating the standard deviation are correct.
 
 stdev <- function(w) {
   stopifnot(is.numeric(w))
@@ -46,6 +47,8 @@ stdev <- function(w) {
 ```
 
 # Examples
+
+_The following code will demonstrate the use of the newly created function `stdev()` using three examples_
 ```{r}
 #Example 1: calculate the standard deviation of a vector
 vec <- c(2,3,4,5,10,12)
@@ -59,6 +62,8 @@ stdev(w = vec1)
 stdev(gapminder$lifeExp)
 ```
 # Testing
+
+_The following code will formally test that the function returns the expected output in three distinct scenarios_
 ```{r}
 # Test that the function output is the same as the built-in dplyr function sd()
 test_that("vec", {expect_equal(sd(vec), stdev(vec))})
